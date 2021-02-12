@@ -31,7 +31,7 @@ Open a new tab and start a Mongo shell if you don't have it running by typing `m
 connect to a new sub-database by typing
 
 ```
-use hunters
+use hunters (Trisha used 'use bountyHunters')
 ```
 
 > Note: If this database does not exist, it will be created. Yay Mongo!
