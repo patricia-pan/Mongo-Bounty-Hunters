@@ -101,7 +101,9 @@ db.bounties.find( { reward: {$lt: 1000} } ).pretty() // To find bounties with re
 
 db.bounties.find( { reward: {$lte: 1000} } ).pretty() // To find bounties less than or equal to 1,000.
 
-db.bounties.find( {hunters: 'Nebula'} ) // To find bounties with the hunter 'Nebula' (even if Nebula is one of two items in the 'hunters' array).
+db.bounties.find( {hunters: 'Nebula'} ) // To find bounties with the hunter 'Nebula' (even if Nebula is one of two items in the 'hunters' array). Blake also used the below:
+
+db.bounties.find({hunters: '.*Nebula.*/i}).pretty() // To string match i - includes.
 
 db.bounties.find( {$or: [{ship: 'Waverider'}, {ship: 'Serenity'}] } ) // To find all bounties whose ship name is either 'Waverider' or 'Serenity.'
 
