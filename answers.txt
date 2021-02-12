@@ -1,8 +1,12 @@
+## Initialize 
+
 brew services start mongodb-community@4.4
 
 mongo
 
 use bountyHunters
+
+## Create/Insert
 
 ```javascript
 db.bounties.insert([
@@ -59,6 +63,8 @@ db.bounties.insert( { name : 'Bobby Draper', wantedFor: ' Desertion ', client: '
 WriteResult({ "nInserted" : 1 })
 ```
 
+## Read/Query
+
 db.bounties.find().pretty() // To see all results.
 
 db.bounties.find( {client: 'Time Bureau'} ) // To see bounties whose client is 'Time Bureau'.
@@ -75,10 +81,42 @@ https://stackoverflow.com/questions/52212165/mongo-get-only-the-name-of-document
 
 https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/
 
+## Remove
+
 db.bounties.remove( {name: 'Starbuck'} ) // To remove Starbuck's bounty.
 
 db.bounties.remove( {name: 'Han Solo'}, {justOne: true} ) // To remove just one duplicate bounty. Source: https://docs.mongodb.com/manual/reference/method/db.collection.remove/'
 
+## Update
+
 db.bounties.update( {name: 'Sara Lance'}, {$set: {name: 'White Canary'}} ) // To change Sara's name to her superhero alias 'White Canary.'
 
-db.bounties.update( {name: 'Rocket'}, {$set: {ship: 'The Milano 2'}} ) // Updating Rocket's ship to 'The Milano 2.'
+db.bounties.update( {name: 'Rocket'}, {$set: {ship: 'The Milano 2'}} ) // To update Rocket's ship name to 'The Milano 2.'
+
+## Intermediate Mongo Commands
+
+db.bounties.find( { reward: {$gt: 100000} } ).pretty() // To find all bounties with rewards greater than 100,000.
+
+db.bounties.find( { reward: {$lt: 1000} } ).pretty() // To find bounties with rewards less than 1,000.
+
+db.bounties.find( { reward: {$lte: 1000} } ).pretty() // To find bounties less than or equal to 1,000.
+
+db.bounties.find( {hunters: 'Nebula'} ) // To find bounties with the hunter 'Nebula' (even if Nebula is one of two items in the 'hunters' array).
+
+db.bounties.find( {$or: [{ship: 'Waverider'}, {ship: 'Serenity'}] } ) // To find all bounties whose ship name is either 'Waverider' or 'Serenity.'
+
+db.bounties.find( {$and: [ {captured: false}, {client: 'Ayesha High Priestess of the Sovereign'} ] } ) // To find a bounty that is not captured AND whose client is 'Ayesha High...'
+
+db.bounties.update( {}, {$inc: {reward: 333333} }, {multi: true} ) // To increase all bounties by 333,333. Could also probably use '.updateMany' (https://docs.mongodb.com/manual/tutorial/update-documents/)
+
+db.bounties.update( {}, {$mul: {reward: 2} }, {multi: true} ) // To multiply all bounties by 2. 
+
+db.bounties.update( {name: 'Malcolm Reynolds'}, {$push: {hunters: 'Bobba Fett'} } ) // To add 'Bobba Fett' as a hunter for Malcolm Reynolds.
+
+db.bounties.update( {ship: 'Waverider'}, {$push: {hunters: 'Bobba Fett'} } ) // To add 'Bobba Fett' as a hunter for the bounty with the ship 'Waverider.' *Source: https://docs.mongodb.com/manual/reference/operator/update/push/)*
+
+db.bounties.update( {hunters: 'Dengar'}, {$pull: {hunters: 'Dengar'} } ) // To find (where Dengar is included as a hunter) and remove 'Dengar' as a hunter.
+
+db.bounties.update( {name: 'Han Solo'}, {$set: {lastSeen: 'yesterday'} } ) // To add (to set) a new field to Han Solo.
+
+db.bounties.updateMany( {}, { $set: {lastSeen: 'last week'} }, {upsert: true} )
