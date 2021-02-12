@@ -119,7 +119,7 @@ db.bounties.update( {hunters: 'Dengar'}, {$pull: {hunters: 'Dengar'} } ) // To f
 
 db.bounties.update( {name: 'Han Solo'}, {$set: {lastSeen: 'yesterday'} } ) // To add (to set) a new field to Han Solo.
 
-db.bounties.updateMany( {name: {$ne: 'Han Solo'}}, { $set: {lastSeen: 'last week'}} ) // For anyone whose name isn't Han Solo, set (and create if it doesn't already exist) a 'lastSeen' field and set the value to 'last week'.
+db.bounties.updateMany( {name: {$ne: 'Han Solo'}}, { $set: {lastSeen: 'last week'}} ) // For anyone whose name isn't Han Solo, set (and create if it doesn't already exist) a 'lastSeen' field and set the value to 'last week'. *Source: https://docs.mongodb.com/manual/reference/operator/query/ne/#op._S_ne*
 
 
 ---
