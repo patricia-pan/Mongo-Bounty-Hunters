@@ -1,1 +1,84 @@
-Please replace this text with ~50 lines of terminal history.
+brew services start mongodb-community@4.4
+
+mongo
+
+use bountyHunters
+
+```javascript
+db.bounties.insert([
+  {
+    name: 'Han Solo',
+    wantedFor : 'Owing money',
+    client : 'Jabba the Hut',
+    reward : 1000000,
+    ship: 'Millennium Falcon',
+    hunters :['Bobba Fett', 'Dengar', 'IG-88', 'Zuckuss', 'Greedo', 'Bossk', '4-LOM'],
+    captured: false
+  },
+  {
+    name: 'Rocket',
+    wantedFor : 'Stealing Batteries',
+    client : 'Ayesha High Priestess of the Sovereign',
+    reward : 1000000000,
+    ship: 'The Milano',
+    hunters :['Nebula', 'Ravagers'],
+    captured: false
+  },
+  {
+    name: 'Sara Lance',
+    wantedFor : 'Screwing up the timeline, causing anachronisms',
+    client : 'Time Bureau',
+    reward : 50000,
+    ship: 'Waverider',
+    hunters :['Chronos'],
+    captured: false
+  },
+  {
+    name: 'Malcolm Reynolds',
+    wantedFor : 'Aiming to misbehave',
+    client : 'The Alliance',
+    reward : 40000,
+    ship: 'Serenity',
+    hunters :['Jubal Early'],
+    captured: false
+  },
+  {
+    name: 'Starbuck',
+    wantedFor : "Disobeying Captain's orders",
+    client : 'Captain Adama',
+    ship: 'Demetrius',
+    reward : 1000,
+    hunters :['Apollo'],
+    captured: true
+  }
+])
+```
+
+```javascript
+db.bounties.insert( { name : 'Bobby Draper', wantedFor: ' Desertion ', client: 'Mars', reward: 25000, ship: 'The Rocinante', hunter : ['Martian Navy', 'The Belt', 'Earth'], captured: false } )
+WriteResult({ "nInserted" : 1 })
+```
+
+db.bounties.find().pretty() // To see all results.
+
+db.bounties.find( {client: 'Time Bureau'} ) // To see bounties whose client is 'Time Bureau'.
+
+db.bounties.find( {captured: true } ) // To see all bounties who have been captured. (Same goes for inverse; no need to add 'multi').
+
+db.bounties.find({ name: "Bobby Draper" }) // To find the bounty that I added.
+
+db.bounties.find( {}, {_id: 0, name: 1} ) // To only show the names. The first curly braces is empty since we're not filtering by anything and want all results. _id: 0 means we don't want the id shown, and name: 1 means we want them shown. 
+
+Source for returning just names:
+
+https://stackoverflow.com/questions/52212165/mongo-get-only-the-name-of-documents-but-not-the-whole-documents
+
+https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/
+
+db.bounties.remove( {name: 'Starbuck'} ) // To remove Starbuck's bounty.
+
+db.bounties.remove( {name: 'Han Solo'}, {justOne: true} ) // To remove just one duplicate bounty. Source: https://docs.mongodb.com/manual/reference/method/db.collection.remove/'
+
+db.bounties.update( {name: 'Sara Lance'}, {$set: {name: 'White Canary'}} ) // To change Sara's name to her superhero alias 'White Canary.'
+
+db.bounties.update( {name: 'Rocket'}, {$set: {ship: 'The Milano 2'}} ) // Updating Rocket's ship to 'The Milano 2.'
