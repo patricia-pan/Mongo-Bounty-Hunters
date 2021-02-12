@@ -119,4 +119,20 @@ db.bounties.update( {hunters: 'Dengar'}, {$pull: {hunters: 'Dengar'} } ) // To f
 
 db.bounties.update( {name: 'Han Solo'}, {$set: {lastSeen: 'yesterday'} } ) // To add (to set) a new field to Han Solo.
 
-db.bounties.updateMany( {}, { $set: {lastSeen: 'last week'} }, {upsert: true} )
+db.bounties.updateMany( {name: {$ne: 'Han Solo'}}, { $set: {lastSeen: 'last week'}} ) // For anyone whose name isn't Han Solo, set (and create if it doesn't already exist) a 'lastSeen' field and set the value to 'last week'.
+
+
+---
+Below were some commands that I tried to use for the above (focusing on "searching for if 'lastSeen' doesn't exist") before giving up and focusing on "where name is not equal to Han Solo:"
+
+db.bounties.updateMany( {}, { $set: {lastSeen: 'last week'} }, {upsert: true} ) // Doesn't work because it finds all values (including Han Solo) and either updates it if the field exists or inserts it if it doesn't, to 'last week'.
+
+db.bounties.updateMany( {}, { $set: {lastSeen: 'last week'} }, {upsert: false} ) // Doesn't work because it only updated 1 value (overwrote Han Solo)
+
+db.bounties.updateMany( {lastSeen: null}, { $set: {lastSeen: 'last week'} }, {upsert: true} ) // Doesn't work
+
+db.bounties.updateMany( {lastSeen: {$exists: false}}, { $set: {lastSeen: 'last week'} }, {upsert: true} ) // Also doesn't work
+
+db.bounties.update( {lastSeen: {$not: {} } }, {$set: {lastSeen: 'last week'} } ) // Doesn't work
+
+
